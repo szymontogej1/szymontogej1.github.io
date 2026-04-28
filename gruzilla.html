@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GRUZILLA Sp. z o.o. — Wyburzenia i rozbiórki</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --red: #c8102e;
+    --black: #0a0a0a;
+    --white: #f0ece3;
+    --yellow: #f5c400;
+    --gray: #1a1a1a;
+    --border: 3px solid var(--white);
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Space Mono', monospace;
+    background: var(--black);
+    color: var(--white);
+    cursor: crosshair;
+    overflow-x: hidden;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 9999;
+    opacity: 0.35;
+  }
+
+  header {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: var(--black);
+    border-bottom: var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 40px;
+    height: 64px;
+  }
+
+  .logo {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 36px;
+    letter-spacing: 4px;
+    color: var(--white);
+    text-decoration: none;
+  }
+  .logo span { color: var(--red); }
+
+  nav { display: flex; }
+  nav a {
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--white);
+    text-decoration: none;
+    padding: 22px 20px;
+    border-left: 1px solid #333;
+    transition: background 0.1s, color 0.1s;
+  }
+  nav a:hover { background: var(--red); color: var(--white); }
+
+  .hero {
+    min-height: 92vh;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    border-bottom: var(--border);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero-text {
+    padding: 80px 60px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    border-right: var(--border);
+    position: relative;
+    z-index: 2;
+  }
+
+  .hero-tag {
+    font-size: 10px;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--red);
+    border: 1px solid var(--red);
+    display: inline-block;
+    padding: 4px 10px;
+    margin-bottom: 40px;
+    animation: fadeUp 0.6s ease both;
+    animation-delay: 0.1s;
+  }
+
+  .hero h1 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(60px, 8vw, 110px);
+    line-height: 0.92;
+    letter-spacing: 2px;
+    margin-bottom: 40px;
+    animation: fadeUp 0.6s ease both;
+    animation-delay: 0.25s;
+  }
+
+  .hero h1 em {
+    font-style: normal;
+    color: var(--red);
+    display: block;
+  }
+
+  .hero p {
+    font-size: 13px;
+    line-height: 1.8;
+    color: #888;
+    max-width: 420px;
+    margin-bottom: 50px;
+    animation: fadeUp 0.6s ease both;
+    animation-delay: 0.4s;
+  }
+
+  .btn {
+    display: inline-block;
+    padding: 16px 36px;
+    background: var(--red);
+    color: var(--white);
+    text-decoration: none;
+    font-size: 11px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    border: 2px solid var(--red);
+    transition: background 0.15s, color 0.15s, transform 0.1s;
+    animation: fadeUp 0.6s ease both;
+    animation-delay: 0.55s;
+    align-self: flex-start;
+  }
+  .btn::after {
+    content: '→';
+    margin-left: 10px;
+    transition: transform 0.2s;
+    display: inline-block;
+  }
+  .btn:hover { background: transparent; color: var(--red); }
+  .btn:hover::after { transform: translateX(6px); }
+
+  .hero-visual {
+    background: var(--gray);
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: fadeUp 0.8s ease both;
+    animation-delay: 0.2s;
+  }
+
+  .demolition-art {
+    position: relative;
+    width: 320px;
+    height: 320px;
+  }
+
+  .block { position: absolute; background: #222; border: 2px solid #333; }
+  .b1 { width: 200px; height: 260px; bottom: 40px; left: 60px; background: #1c1c1c; border-color: #444; }
+  .b2 { width: 100px; height: 180px; bottom: 40px; right: 20px; background: #181818; border-color: #333; }
+  .b3 { width: 80px; height: 100px; top: 40px; left: 30px; background: #161616; border-color: #2a2a2a; }
+
+  .win { position: absolute; background: #f5c40033; border: 1px solid #f5c40055; width: 18px; height: 22px; }
+  .w1 { top: 60px; left: 80px; } .w2 { top: 60px; left: 110px; } .w3 { top: 60px; left: 140px; }
+  .w4 { top: 100px; left: 80px; background: var(--red); border-color: var(--red); opacity: 0.7; }
+  .w5 { top: 100px; left: 110px; } .w6 { top: 100px; left: 140px; }
+  .w7 { top: 140px; left: 80px; }
+  .w8 { top: 140px; left: 110px; background: var(--yellow); border-color: var(--yellow); opacity: 0.5; }
+  .w9 { top: 140px; left: 140px; }
+
+  .crack { position: absolute; background: var(--red); opacity: 0.6; transform-origin: top left; }
+  .c1 { width: 2px; height: 60px; top: 30px; left: 150px; transform: rotate(8deg); }
+  .c2 { width: 2px; height: 40px; top: 60px; left: 152px; transform: rotate(-15deg); }
+  .c3 { width: 2px; height: 30px; top: 90px; left: 148px; transform: rotate(5deg); }
+
+  .debris { position: absolute; background: #2a2a2a; border: 1px solid #444; animation: tumble 3s ease-in-out infinite alternate; }
+  .d1 { width: 30px; height: 22px; bottom: 20px; left: 20px; transform: rotate(25deg); }
+  .d2 { width: 18px; height: 18px; bottom: 30px; right: 60px; transform: rotate(-12deg); animation-delay: 0.5s; }
+  .d3 { width: 24px; height: 16px; bottom: 10px; right: 100px; transform: rotate(40deg); animation-delay: 1s; }
+  .d4 { width: 14px; height: 10px; bottom: 25px; left: 90px; transform: rotate(-30deg); animation-delay: 0.3s; }
+
+  .dust { position: absolute; border-radius: 50%; background: rgba(240,236,227,0.06); animation: drift 4s ease-in-out infinite alternate; }
+  .p1 { width: 60px; height: 60px; top: 80px; right: 30px; }
+  .p2 { width: 40px; height: 40px; top: 120px; right: 60px; animation-delay: 1s; }
+  .p3 { width: 80px; height: 80px; bottom: 100px; left: 10px; animation-delay: 2s; }
+
+  .marker { position: absolute; top: 30px; right: 30px; width: 40px; height: 40px; opacity: 0.5; }
+  .marker::before, .marker::after { content: ''; position: absolute; background: var(--red); }
+  .marker::before { width: 100%; height: 2px; top: 50%; transform: translateY(-50%); }
+  .marker::after { height: 100%; width: 2px; left: 50%; transform: translateX(-50%); }
+
+  .hero-stats {
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    border-top: var(--border);
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    z-index: 10;
+  }
+
+  .stat { padding: 24px 40px; border-right: 1px solid #333; animation: fadeUp 0.6s ease both; }
+  .stat:nth-child(1) { animation-delay: 0.6s; }
+  .stat:nth-child(2) { animation-delay: 0.75s; }
+  .stat:nth-child(3) { animation-delay: 0.9s; border-right: none; }
+
+  .stat-num { font-family: 'Bebas Neue', sans-serif; font-size: 42px; color: var(--red); line-height: 1; }
+  .stat-label { font-size: 9px; letter-spacing: 3px; text-transform: uppercase; color: #555; margin-top: 4px; }
+
+  .ticker {
+    background: var(--red);
+    overflow: hidden;
+    height: 38px;
+    display: flex;
+    align-items: center;
+    border-bottom: var(--border);
+  }
+
+  .ticker-inner {
+    display: flex;
+    gap: 60px;
+    white-space: nowrap;
+    animation: ticker 18s linear infinite;
+  }
+
+  .ticker-item { font-size: 11px; letter-spacing: 3px; text-transform: uppercase; color: var(--white); opacity: 0.9; flex-shrink: 0; }
+  .ticker-item::before { content: '◆'; margin-right: 20px; opacity: 0.5; }
+
+  .section-grid { display: grid; grid-template-columns: 220px 1fr; border-bottom: var(--border); }
+
+  .section-label { padding: 60px 40px; border-right: var(--border); display: flex; flex-direction: column; justify-content: flex-start; }
+  .section-label span {
+    font-size: 9px; letter-spacing: 4px; text-transform: uppercase; color: #444;
+    writing-mode: vertical-rl; transform: rotate(180deg); display: block; height: fit-content;
+  }
+
+  .section-num { font-family: 'Bebas Neue', sans-serif; font-size: 80px; color: #1a1a1a; line-height: 1; margin-bottom: 10px; }
+
+  .section-content { padding: 60px 60px; }
+  .section-content h2 { font-family: 'Bebas Neue', sans-serif; font-size: 52px; letter-spacing: 2px; margin-bottom: 30px; line-height: 1; }
+  .section-content p { font-size: 13px; line-height: 1.9; color: #888; max-width: 600px; }
+
+  .services-grid { display: grid; grid-template-columns: 1fr 1fr; border-bottom: var(--border); }
+
+  .service-item {
+    padding: 50px 50px;
+    border-right: 1px solid #222;
+    border-bottom: 1px solid #222;
+    position: relative;
+    transition: background 0.2s;
+    overflow: hidden;
+  }
+  .service-item:hover { background: #111; }
+  .service-item::before {
+    content: ''; position: absolute; top: 0; left: 0;
+    width: 4px; height: 0; background: var(--red); transition: height 0.3s ease;
+  }
+  .service-item:hover::before { height: 100%; }
+
+  .service-icon { font-size: 32px; margin-bottom: 20px; display: block; }
+  .service-item h3 { font-family: 'Bebas Neue', sans-serif; font-size: 26px; letter-spacing: 2px; margin-bottom: 12px; color: var(--white); }
+  .service-item p { font-size: 12px; line-height: 1.8; color: #666; }
+
+  .service-num {
+    position: absolute; top: 20px; right: 24px;
+    font-family: 'Bebas Neue', sans-serif; font-size: 80px; color: #161616;
+    line-height: 1; pointer-events: none; transition: color 0.2s;
+  }
+  .service-item:hover .service-num { color: #1e1e1e; }
+
+  .territory { display: grid; grid-template-columns: 1fr 1fr; border-bottom: var(--border); min-height: 300px; }
+
+  .territory-text { padding: 60px; border-right: var(--border); display: flex; flex-direction: column; justify-content: center; }
+  .territory-text h2 { font-family: 'Bebas Neue', sans-serif; font-size: 52px; letter-spacing: 2px; margin-bottom: 20px; line-height: 1; }
+  .territory-text p { font-size: 13px; line-height: 1.9; color: #888; }
+
+  .territory-map { background: #111; display: flex; align-items: center; justify-content: center; padding: 40px; position: relative; overflow: hidden; }
+
+  .map-graphic { position: relative; width: 200px; height: 200px; }
+  .map-graphic::before {
+    content: 'POLSKA'; font-family: 'Bebas Neue', sans-serif; font-size: 11px; letter-spacing: 6px; color: #333;
+    position: absolute; bottom: -20px; left: 50%; transform: translateX(-50%);
+  }
+
+  .map-pin {
+    position: absolute; width: 14px; height: 14px; background: var(--red);
+    border-radius: 50%; transform: translate(-50%, -50%);
+    box-shadow: 0 0 0 4px rgba(200,16,46,0.2); animation: pulse 2s ease-in-out infinite;
+  }
+  .map-pin::after {
+    content: ''; position: absolute; inset: -8px; border-radius: 50%;
+    border: 1px solid var(--red); opacity: 0.3; animation: pulse 2s ease-in-out infinite 0.3s;
+  }
+  .pin-mysłowice { top: 70%; left: 55%; }
+
+  .coverage-ring {
+    position: absolute; top: 70%; left: 55%; transform: translate(-50%, -50%);
+    width: 100px; height: 100px; border-radius: 50%; border: 1px dashed #333;
+    animation: expandRing 3s ease-in-out infinite;
+  }
+  .coverage-ring-2 { width: 160px; height: 160px; animation-delay: 0.8s; }
+
+  .territory-badge { position: absolute; top: 20px; right: 20px; background: var(--red); color: white; font-size: 9px; letter-spacing: 2px; padding: 6px 10px; text-transform: uppercase; }
+
+  .contact { display: grid; grid-template-columns: 1fr 1fr; border-bottom: var(--border); }
+
+  .contact-info { padding: 80px 60px; border-right: var(--border); }
+  .contact-info h2 { font-family: 'Bebas Neue', sans-serif; font-size: 64px; letter-spacing: 2px; line-height: 1; margin-bottom: 50px; }
+  .contact-info h2 span { color: var(--red); display: block; }
+
+  .contact-detail { margin-bottom: 30px; }
+  .contact-detail-label { font-size: 9px; letter-spacing: 4px; text-transform: uppercase; color: #444; margin-bottom: 6px; }
+  .contact-detail-value { font-size: 13px; color: var(--white); line-height: 1.7; }
+  .contact-detail-value a { color: var(--red); text-decoration: none; transition: opacity 0.2s; }
+  .contact-detail-value a:hover { opacity: 0.7; }
+
+  .contact-cta { padding: 80px 60px; display: flex; flex-direction: column; justify-content: center; background: var(--gray); }
+  .contact-cta p { font-size: 13px; line-height: 1.9; color: #666; margin-bottom: 40px; }
+  .cta-big { font-family: 'Bebas Neue', sans-serif; font-size: 28px; letter-spacing: 3px; color: var(--white); margin-bottom: 20px; }
+
+  footer {
+    background: var(--black);
+    border-top: var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 24px 40px;
+  }
+  footer .logo-sm { font-family: 'Bebas Neue', sans-serif; font-size: 22px; letter-spacing: 3px; }
+  footer .logo-sm span { color: var(--red); }
+  footer p { font-size: 10px; color: #444; letter-spacing: 2px; text-transform: uppercase; }
+  footer .founders { font-size: 10px; color: #333; letter-spacing: 1px; text-align: right; }
+
+  .red-strip {
+    height: 6px;
+    background: repeating-linear-gradient(90deg, var(--red) 0px, var(--red) 30px, transparent 30px, transparent 40px);
+    opacity: 0.5;
+  }
+
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+  @keyframes ticker { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+  @keyframes tumble { 0% { transform: rotate(25deg) translate(0,0); } 100% { transform: rotate(32deg) translate(2px,-3px); } }
+  @keyframes drift { 0% { transform: scale(1) translateY(0); opacity: 0.06; } 100% { transform: scale(1.1) translateY(-10px); opacity: 0.12; } }
+  @keyframes pulse { 0%,100% { box-shadow: 0 0 0 4px rgba(200,16,46,0.2); } 50% { box-shadow: 0 0 0 10px rgba(200,16,46,0.05); } }
+  @keyframes expandRing { 0% { opacity: 0.4; transform: translate(-50%,-50%) scale(0.8); } 50% { opacity: 0.1; transform: translate(-50%,-50%) scale(1); } 100% { opacity: 0.4; transform: translate(-50%,-50%) scale(0.8); } }
+
+  .reveal { opacity: 0; transform: translateY(40px); transition: opacity 0.7s ease, transform 0.7s ease; }
+  .reveal.visible { opacity: 1; transform: none; }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">GRU<span>ZILLA</span></div>
+  <nav>
+    <a href="#o-firmie">O firmie</a>
+    <a href="#uslugi">Usługi</a>
+    <a href="#obszar">Obszar</a>
+    <a href="#kontakt">Kontakt</a>
+  </nav>
+</header>
+
+<section class="hero">
+  <div class="hero-text">
+    <span class="hero-tag">Wyburzenia · Rozbiórki · Śląsk</span>
+    <h1>Wybu-<em>rzamy.</em> Czyś-cimy.</h1>
+    <p>Specjalizujemy się w kompleksowych rozbiórkach obiektów budowlanych, przygotowaniu terenów inwestycyjnych oraz transporcie ciężkim.</p>
+    <a href="#kontakt" class="btn">Skontaktuj się</a>
+  </div>
+  <div class="hero-visual">
+    <div class="demolition-art">
+      <div class="block b3"></div>
+      <div class="block b1">
+        <div class="win w1"></div><div class="win w2"></div><div class="win w3"></div>
+        <div class="win w4"></div><div class="win w5"></div><div class="win w6"></div>
+        <div class="win w7"></div><div class="win w8"></div><div class="win w9"></div>
+        <div class="crack c1"></div><div class="crack c2"></div><div class="crack c3"></div>
+      </div>
+      <div class="block b2"></div>
+      <div class="debris d1"></div><div class="debris d2"></div><div class="debris d3"></div><div class="debris d4"></div>
+      <div class="dust p1"></div><div class="dust p2"></div><div class="dust p3"></div>
+      <div class="marker"></div>
+    </div>
+  </div>
+  <div class="hero-stats" style="grid-column: 1 / -1;">
+    <div class="stat"><div class="stat-num" data-target="150">0</div><div class="stat-label">Ukończonych zleceń</div></div>
+    <div class="stat"><div class="stat-num" data-target="12">0</div><div class="stat-label">Lat jebania betonu</div></div>
+    <div class="stat"><div class="stat-num" data-target="100">0</div><div class="stat-label">% Zadowolonych klientów</div></div>
+  </div>
+</section>
+
+<div class="ticker">
+  <div class="ticker-inner">
+    <span class="ticker-item">Wyburzenia obiektów</span>
+    <span class="ticker-item">Kruszenie gruzu</span>
+    <span class="ticker-item">Transport ciężki</span>
+    <span class="ticker-item">Przygotowanie terenu</span>
+    <span class="ticker-item">Całe terytorium Polski</span>
+    <span class="ticker-item">Bezpłatna wycena</span>
+    <span class="ticker-item">Wyburzenia obiektów</span>
+    <span class="ticker-item">Kruszenie gruzu</span>
+    <span class="ticker-item">Transport ciężki</span>
+    <span class="ticker-item">Przygotowanie terenu</span>
+    <span class="ticker-item">Całe terytorium Polski</span>
+    <span class="ticker-item">Bezpłatna wycena</span>
+  </div>
+</div>
+
+<div class="red-strip"></div>
+
+<div id="o-firmie" class="section-grid reveal">
+  <div class="section-label">
+    <div class="section-num">01</div>
+    <span>O firmie</span>
+  </div>
+  <div class="section-content">
+    <h2>Kim<br>jesteśmy</h2>
+    <p>GRUZILLA Sp. z o.o. to firma z siedzibą w Mysłowicach, działająca na rynku wyburzeń i robót ziemnych. Założycielami są <strong style="color:var(--white)">Szymon Skwarek</strong> oraz <strong style="color:var(--white)">Aleksander Kierek</strong>. Wykonujemy zlecenia z pełnym zaangażowaniem, dbając o bezpieczeństwo na każdym etapie prac.</p>
+  </div>
+</div>
+
+<div id="uslugi" class="services-grid reveal">
+  <div class="service-item">
+    <span class="service-num">01</span>
+    <span class="service-icon"></span>
+    <h3>Wyburzenia obiektów</h3>
+    <p>Budynki mieszkalne, hale przemysłowe, konstrukcje stalowe — każda skala rozbiórki.</p>
+  </div>
+  <div class="service-item">
+    <span class="service-num">02</span>
+    <span class="service-icon"></span>
+    <h3>Kruszenie gruzu</h3>
+    <p>Recykling materiałów budowlanych i ponowne wykorzystanie odpadów rozbiórkowych.</p>
+  </div>
+  <div class="service-item">
+    <span class="service-num">03</span>
+    <span class="service-icon"></span>
+    <h3>Transport ciężki</h3>
+    <p>Przewóz materiałów oraz elementów konstrukcyjnych — terminowo i bezpiecznie.</p>
+  </div>
+  <div class="service-item">
+    <span class="service-num">04</span>
+    <span class="service-icon"></span>
+    <h3>Przygotowanie terenu</h3>
+    <p>Niwelacja, usuwanie fundamentów, oczyszczanie działek pod nową inwestycję.</p>
+  </div>
+</div>
+
+<div id="obszar" class="territory reveal">
+  <div class="territory-text">
+    <h2>Obszar<br>działal-<br>ności</h2>
+    <p>Działamy głównie na terenie <strong style="color:var(--white)">województwa śląskiego</strong> oraz południowej Polski. Realizujemy również zlecenia na terenie całego kraju.</p>
+  </div>
+  <div class="territory-map">
+    <span class="territory-badge">Baza: Mysłowice</span>
+    <div class="map-graphic">
+      <div class="coverage-ring"></div>
+      <div class="coverage-ring coverage-ring-2"></div>
+      <div class="map-pin pin-mysłowice"></div>
+    </div>
+  </div>
+</div>
+
+<div id="kontakt" class="contact reveal">
+  <div class="contact-info">
+    <h2>Skon-<span>taktuj się</span></h2>
+    <div class="contact-detail">
+      <div class="contact-detail-label">Adres</div>
+      <div class="contact-detail-value">ul. Orła Białego 79B<br>41-409 Mysłowice</div>
+    </div>
+    <div class="contact-detail">
+      <div class="contact-detail-label">E-mail</div>
+      <div class="contact-detail-value"><a href="mailto:biuro@gruzilla.pl">biuro@gruzilla.pl</a></div>
+    </div>
+    <div class="contact-detail">
+      <div class="contact-detail-label">NIP: <span style="color: white;">634-28-91-752</span> <br> REGON: <span style="color: white;">388452190</span> <br> KRS: <span style="color: white;">0000894176</span> <br> Sąd Rejestrowy: <span style="color: white;">Sąd Rejonowy Katowice-Wschód w Katowicach
+VIII Wydział Gospodarczy Krajowego Rejestru Sądowego</span></div>
+      <div class="contact-detail-value">Mysłowice, woj. śląskie</div>
+    </div>
+  </div>
+  <div class="contact-cta">
+    <div class="cta-big">Bezpłatna wycena w 24h</div>
+    <p>Skontaktuj się z nami — opisz projekt, a my przygotujemy szczegółową ofertę bez żadnych zobowiązań.</p>
+    <a href="mailto:biuro@gruzilla.pl" class="btn">Napisz do nas</a>
+  </div>
+</div>
+
+<footer>
+  <div class="logo-sm">GRU<span>ZILLA</span></div>
+  <p>© 2026 GRUZILLA Sp. z o.o. — Wszelkie prawa zastrzeżone</p>
+  <p>PKD: <br> 43.11.Z - rozbiórka i burzenie obiektów budowlanych<br>43.12.Z - Przygotowanie terenu pod budowę <br> 38.32.Z - Odzysk surowców z materiałów segregowanych <br> 49.41.Z - transport drogowy towarów</p>
+  <div class="founders">Skwarek · Kierek</div>
+</footer>
+
+<script>
+  function animateCounter(el) {
+    const target = parseInt(el.dataset.target);
+    const duration = 1400;
+    const start = performance.now();
+    function update(now) {
+      const elapsed = now - start;
+      const progress = Math.min(elapsed / duration, 1);
+      const eased = 1 - Math.pow(1 - progress, 3);
+      el.textContent = Math.round(eased * target) + (target === 100 ? '%' : '+');
+      if (progress < 1) requestAnimationFrame(update);
+    }
+    requestAnimationFrame(update);
+  }
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) { entry.target.classList.add('visible'); observer.unobserve(entry.target); }
+    });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+  const counterObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) { animateCounter(entry.target); counterObserver.unobserve(entry.target); }
+    });
+  }, { threshold: 0.5 });
+  document.querySelectorAll('.stat-num').forEach(el => counterObserver.observe(el));
+
+  const serviceObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.querySelectorAll('.service-item').forEach((item, i) => {
+          setTimeout(() => { item.style.opacity = '1'; item.style.transform = 'none'; }, i * 120);
+        });
+        serviceObserver.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.1 });
+
+  document.querySelectorAll('.services-grid').forEach(el => {
+    el.querySelectorAll('.service-item').forEach(item => {
+      item.style.opacity = '0';
+      item.style.transform = 'translateY(30px)';
+      item.style.transition = 'opacity 0.5s ease, transform 0.5s ease, background 0.2s';
+    });
+    serviceObserver.observe(el);
+  });
+</script>
+</body>
+</html>
